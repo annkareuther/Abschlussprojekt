@@ -1,0 +1,44 @@
+from ev3robot import *
+from time import sleep
+import threading
+
+robot = LegoRobot()
+gear = Gear()
+robot.addPart(gear)
+ls = LightSensor(SensorPort.S3)
+robot.addPart(ls)
+ls.activate(True)
+us = UltrasonicSensor(SensorPort.S4)
+robot.addPart(us)
+gear.forward()
+dist= us.getDistance()
+v = ls.getValue()
+gear.setSpeed(30)
+
+
+# zuerst muss sichergestellt werden, dass der Roboter nicht den Kreis verlässt.
+def searchTarget():
+   repeat:  
+        v = ls.getValue()
+        if v < 500:
+            set.Speed (40)
+            gear.backward(200)
+            gear.left(800)
+# danach muss der Roboter versuchen das Objekt zu finden 
+        
+        gear.right()
+        delay(50)    
+        dist = us.getDistance()
+        print (dist)
+#wenn Wert nicht 255 bedeutet, dass Ultraschallsensor etwas gefunden hat
+        if dist != 255:
+            gear.forward()
+            delay(500)
+   
+            
+ 
+searchTarget()
+
+
+
+robot.exit()
