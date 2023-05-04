@@ -5,18 +5,23 @@ import threading
 robot = LegoRobot()
 gear = Gear()
 robot.addPart(gear)
+
 ls = LightSensor(SensorPort.S3)
 robot.addPart(ls)
 ls.activate(True)
+v = ls.getValue()
+
 us = UltrasonicSensor(SensorPort.S4)
 robot.addPart(us)
-gear.forward()
 dist= us.getDistance()
-v = ls.getValue()
+
 gear.setSpeed(30)
+gear.forward()
 
 
-# zuerst muss sichergestellt werden, dass der Roboter nicht den Kreis verlässt.
+# die erste Priorität ist dass der Roboter den Kreis nicht verlässt, da sonst das Spiel direkt verloren ist
+# wenn der Lichtsensor unter 500 geht also dunkle Farbe wahrnimmt dann fährt der Roboter zurück und dreht sich 
+# dann um ungefähr 120 Grad bevor er wieder geradeaus fährt.
 def searchTarget():
    repeat:  
         v = ls.getValue()
@@ -24,6 +29,9 @@ def searchTarget():
             set.Speed (40)
             gear.backward(200)
             gear.left(800)
+# Geschwindigkeit wieder zurückstellen damit wenn er wieder über die schwarze Linie fährt zur spät reagiert.
+            set.Speed(20)
+            gear.forward
 # danach muss der Roboter versuchen das Objekt zu finden 
         
         gear.right()
@@ -32,13 +40,10 @@ def searchTarget():
         print (dist)
 #wenn Wert nicht 255 bedeutet, dass Ultraschallsensor etwas gefunden hat
         if dist != 255:
+            
             gear.forward()
             delay(500)
    
-            
- 
+           
 searchTarget()
-
-
-
 robot.exit()
