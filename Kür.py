@@ -15,3 +15,4 @@ def kuer():
     
     
 kuer()
+robot.exit()
