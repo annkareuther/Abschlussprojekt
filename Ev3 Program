@@ -33,16 +33,16 @@ def searchTarget():
             set.Speed(20)
             gear.forward
 # danach muss der Roboter versuchen das Objekt zu finden 
-        
-        gear.right()
-        delay(50)    
-        dist = us.getDistance()
-        print (dist)
+# wenn Farbwert höher ist dann befindet er sich immernoch auf weissem Boden bedeutete er kann dann den anderen Roboter suchen      
+        if v > 500:
+            gear.right()
+            delay(50)    
+            dist = us.getDistance()
+            print (dist)
 #wenn Wert nicht 255 bedeutet, dass Ultraschallsensor etwas gefunden hat
-        if dist != 255:
-            
-            gear.forward()
-            delay(500)
+            if dist != 255:            
+               gear.forward(100)
+               delay(100)
    
            
 searchTarget()
